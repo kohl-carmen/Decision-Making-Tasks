@@ -15,12 +15,12 @@ handedness=input('handedness: ','s');
 Practice=[1,2,3,0];%1: practice easy to hard  comb1, 2: easy to hard comb 2, 3: intermixed hard, 0: experiment
 
 %Stimulus Settings
-nr_trials_per_cond=200; % 
+nr_trials_per_cond=200; 
 nr_trials_per_block=80;
 nr_practice_trials=100;
 
 %% Psychtoolbox
-PsychDefaultSetup(2); %psychtoolbox setup (?)
+PsychDefaultSetup(2); 
 screen_nr=max(Screen('Screens')); % returns max. of vector for number of screens
 %define black & white
 white=WhiteIndex(screen_nr);
@@ -51,10 +51,9 @@ end
 %% Screen %CHANGE
 %for 57cm distance from screen, 1cm=1degree
 %this is for 100cm away from screen (for diff distance use
-%tan(angle)=opposite over adjacent(i think) to get angle and then times 2
-screen_cm=37;%50;
+screen_cm=37;
 cm_per_degree = 1.7454 ;
-screen_deg=screen_cm / cm_per_degree;%50;
+screen_deg=screen_cm / cm_per_degree;
 deg=window_rect(3)/screen_deg;%number of pixels per degree
 
 
@@ -253,8 +252,8 @@ for runthrough=RUNTHROUGH
         session.NotifyWhenDataAvailableExceeds = 2 .* round(ifi.*session.Rate); %1667; % notify every 200 or so samples. gives me a matrix with 0s and times of those 0s
         session.IsContinuous = true;%keeps overwriting the matrix with the zeros continuously
 
-        lh = session.addlistener('DataAvailable',@weirdfunction); %calls a callback function (see bottom bit)
-        startBackground(session);   %acquisition trigger?
+        lh = session.addlistener('DataAvailable',@listenerfunction); %calls a callback function (see bottom bit)
+        startBackground(session);   %acquisition trigger
         Trigger2=GetSecs; %psychtoolbox baseline
 
         ResponseTime = 0;
@@ -311,7 +310,7 @@ for runthrough=RUNTHROUGH
         %Record Response
 
         if ResponseInput(1)==1
-            response=2; %RIGHT (on screen and on national instr
+            response=2; %RIGHT (on screen and on national instr)
             rt = (ResponseTime - (stim_onset_time - acquisition_start));
         elseif ResponseInput(2)==1;
             response=1;
@@ -398,9 +397,9 @@ for runthrough=RUNTHROUGH
 end
 
 %----------------------
-%% Weird Function
+%% Listener Function
 %----------------------
-function weirdfunction(src, event)
+function listenerfunction(src, event)
     %event.Data
     if any(event.Data(:,1) > 3) %AI 0 (pinch)
         ResponseInput(1) = 1;

@@ -30,7 +30,7 @@ Trials=[1:4];
 
 Max_count_per_combo=Order_length/(length(Trials))/4;% for 800 Trials (200 per rep condition), I want 50 per sequence (50x[1 1],50x [2 2]....)
 
-remix=1; % just in case we need to start ovr
+remix=1; % just in case we need to start over
 remix_count=0;
 while remix
     Seq.counts=zeros(length(Seq.combos),1);

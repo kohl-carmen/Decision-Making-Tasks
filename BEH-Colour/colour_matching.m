@@ -1,4 +1,7 @@
+%% task to establish colours perceived to be equally salient
+
 participant='0'
+
 Combs=[1 2];
 nr_trials=10*length(Combs);
 rng('shuffle')
@@ -8,17 +11,14 @@ starting_point=rand(1,nr_trials)/3;
 neg=randperm(length(starting_point));
 neg=neg(1:length(starting_point)/2);
 starting_point(neg)=-starting_point(neg);
-%either keep A fixed an adjust B. Or: keep one fixed and adjust all 3
-%others?
+
 
 %% Psychtoolbox
-PsychDefaultSetup(2); %psychtoolbox setup (?)
-screen_nr=max(Screen('Screens')); % returns max. of vector for number of screens
-%define black & white
+PsychDefaultSetup(2); 
+screen_nr=max(Screen('Screens')); 
 white=WhiteIndex(screen_nr);
 black=BlackIndex(screen_nr);
-%Open window, define centre, set priroty
-[window, window_rect]=PsychImaging('OpenWindow',screen_nr,[0 0 0]);%opens black screen
+[window, window_rect]=PsychImaging('OpenWindow',screen_nr,[0 0 0]);
 [x_centre, y_centre]=RectCenter(window_rect); 
 ifi=Screen('GetFlipInterval',window); 
 Priority(MaxPriority(window));
@@ -27,10 +27,9 @@ HideCursor;
 %% Screen %CHANGE
 % for 57cm distance from screen, 1cm=1degree
 % this is for 100cm away from screen (for diff distance use
-% tan(angle)=opposite over adjacent(i think) to get angle and then times 2
-screen_cm=37;%50;
+screen_cm=37;
 cm_per_degree = 1.7454 ;
-screen_deg=screen_cm / cm_per_degree;%50;
+screen_deg=screen_cm / cm_per_degree;
 deg=window_rect(3)/screen_deg;%number of pixels per degree
 
 
