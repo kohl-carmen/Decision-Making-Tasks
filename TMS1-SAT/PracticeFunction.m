@@ -1,6 +1,6 @@
 function PracticeFunction(coherence_order, direction_order, x_centre, y_centre, window, white,ifi,window_rect,buttons,deg, File2,coherence)
 % Practice trials. Starts with 2000ms signal. If 5 correct, 1000ms. If 5
-% correct, break.
+
 
 %% Instruction Screen
 Screen('TextFont',window,'Times');
@@ -25,7 +25,7 @@ for trial=1:nr_trials
     signal_jitter=gamrnd(1,150)/1000;
     while signal_jitter > 1;
         signal_jitter=gamrnd(1,150)/1000;
-    end%take appropriate conditions from randomisation thingy earlier
+    end%take appropriate conditions from randomisation
     lvl_coherence=coherence_order(trial);
     direction=direction_order(trial); %direcions randomly drawn. not part of initial randomisation
 
@@ -89,7 +89,7 @@ for trial=1:nr_trials
         practice_round=2;
     end
         
-    if accuracy_counter==5 && practice_round==2;
+    if accuracy_counter==5 && practice_round==2
         break
     end
         

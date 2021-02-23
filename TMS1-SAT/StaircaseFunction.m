@@ -37,7 +37,7 @@ for trial=1:stair_trials
         signal_jitter=gamrnd(1,150)/1000;
     end
 
-    %take appropriate conditions from randomisation thingy earlier
+    %take appropriate conditions from randomisation
     direction=direction_order(trial); %direcions randomly drawn. not part of initial randomisation 
     easy_hard_condition=easy_hard_order(trial); % 1=easy
 
@@ -78,7 +78,7 @@ for trial=1:stair_trials
     [rt, accuracy, time_everything, response]=TrialLoop(par2{:});
     
     %% Feedback
-    if accuracy==1;
+    if accuracy==1
         feedback='Correct';
     else
         feedback='Incorrect';
@@ -110,7 +110,7 @@ for trial=1:stair_trials
     
     %% STAIRCASE
     if trial>practice_trials
-        if response ~ 0;
+        if response ~ 0
            if easy_hard_condition==1
                q_95=QuestUpdate(q_95,trial_coherence,accuracy);
                trial_coherence_95=QuestQuantile(q_95);

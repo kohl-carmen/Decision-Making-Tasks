@@ -52,7 +52,7 @@ address = hex2dec('D010'); %This is the address of the parallel port. You can ge
 %(from its properties)
 
 %% Psychtoolbox
-PsychDefaultSetup(2); %psychtoolbox setup (?)
+PsychDefaultSetup(2); %psychtoolbox setup 
 screen_nr=max(Screen('Screens')); % returns max. of vector for number of screens
 %define black & white
 white=WhiteIndex(screen_nr);
@@ -72,11 +72,10 @@ HideCursor;
 
 %% Screen %CHANGE
 %for 57cm distance from screen, 1cm=1degree
-%this is for 100cm away from screen (for diff distance use
-%tan(angle)=opposite over adjacent(i think) to get angle and then times 2
-screen_cm=37;%50;
+%this is for 100cm away from screen 
+screen_cm=37;
 cm_per_degree = 1.7454 ;
-screen_deg=screen_cm / cm_per_degree;%50;
+screen_deg=screen_cm / cm_per_degree;
 deg=window_rect(3)/screen_deg;%number of pixels per degree
 
 % DAQ setup
@@ -90,47 +89,47 @@ DrawFormattedText(window,text,'center','center',white);
 vbl=Screen('Flip',window);%flip to screen
 KbStrokeWait;%waits for user to press any key 
 
- %% DESIGN
- Bias={'cue_right' 'cue_left'  'no_cue'};% I thoguht it might be nice to only have one third non-biased (need biased because we need to sort congruent and non-cong)
- Dir=[1 2];
- nr_trials=length(Bias)* nr_trials_per_cond;
- bias=.8;
- 
- %make up nly cue_right_trials
- %cue right==1
- % right= 1
- cue_order_right=ones(nr_trials_per_cond,1);
- dir_order_right=nan(size(cue_order_right));
- dir_order_right(1:length(dir_order_right).*bias)=1;
- dir_order_right(length(dir_order_right).*bias+1:end)=2;
- 
-%make up nly cue_right_trials
- %cue left==2
- % right= 1
- cue_order_left=ones(nr_trials_per_cond,1)+1;
- dir_order_left=nan(size(cue_order_left));
- dir_order_left(1:length(dir_order_left).*bias)=2;
- dir_order_left(length(dir_order_left).*bias+1:end)=1;
- 
- %make up nly non-cue trials
- %non_cue==3
- % right= 1
- cue_order_none=ones(nr_trials_per_cond,1)+2;
- dir_order_none=nan(size(cue_order_none));
- dir_order_none(1:length(dir_order_none).*.5)=2;
- dir_order_none(length(dir_order_none).*.5+1:end)=1;
- 
- %now put together and shuffle
- cue_order=[cue_order_right; cue_order_left; cue_order_none];
- dir_order=[dir_order_right; dir_order_left; dir_order_none];
- 
- rng('shuffle');
- order=randperm(length(cue_order)); 
- 
- cue_order=cue_order(order);
- dir_order=dir_order(order);
- 
- %% cue coords
+%% DESIGN
+Bias={'cue_right' 'cue_left'  'no_cue'};
+Dir=[1 2];
+nr_trials=length(Bias)* nr_trials_per_cond;
+bias=.8;
+
+%make up only cue_right_trials
+%cue right==1
+% right= 1
+cue_order_right=ones(nr_trials_per_cond,1);
+dir_order_right=nan(size(cue_order_right));
+dir_order_right(1:length(dir_order_right).*bias)=1;
+dir_order_right(length(dir_order_right).*bias+1:end)=2;
+
+%make up only cue_right_trials
+%cue left==2
+% right= 1
+cue_order_left=ones(nr_trials_per_cond,1)+1;
+dir_order_left=nan(size(cue_order_left));
+dir_order_left(1:length(dir_order_left).*bias)=2;
+dir_order_left(length(dir_order_left).*bias+1:end)=1;
+
+%make up only non-cue trials
+%non_cue==3
+% right= 1
+cue_order_none=ones(nr_trials_per_cond,1)+2;
+dir_order_none=nan(size(cue_order_none));
+dir_order_none(1:length(dir_order_none).*.5)=2;
+dir_order_none(length(dir_order_none).*.5+1:end)=1;
+
+%now put together and shuffle
+cue_order=[cue_order_right; cue_order_left; cue_order_none];
+dir_order=[dir_order_right; dir_order_left; dir_order_none];
+
+rng('shuffle');
+order=randperm(length(cue_order)); 
+
+cue_order=cue_order(order);
+dir_order=dir_order(order);
+
+%% cue coords
 x_coords=[5 35 35 5];
 y_coords=[-20 0 0 20];
 cue_right_coords=[x_coords; y_coords];
@@ -212,7 +211,7 @@ for trial=1:nr_trials
     %% Initialise 
     %----------------------
     %Markers
-    if cue==Bias{1}; %right bias
+    if cue==Bias{1} %right bias
         marker=10;
     elseif cue==Bias{2}% left bias
         marker=20;
@@ -226,14 +225,14 @@ for trial=1:nr_trials
     %signal marker
         if dir==1%right
             signal_marker=marker+2;
-        elseif dir==2;%left
+        elseif dir==2%left
             signal_marker=marker+3;
         end
     
     
 
     signal_jitter=gamrnd(1,150)/1000;
-    while signal_jitter > 1;
+    while signal_jitter > 1
         signal_jitter=gamrnd(1,150)/1000;
     end
     signal_onset_time=GetSecs+1+signal_jitter+ifi; %need fake signal time in case i never make it to signal. add1 AFTER multipilication(otherwise i add a day or something);
@@ -257,8 +256,8 @@ for trial=1:nr_trials
     session.Rate = 100000;%sampling rate (how many times it checks the status of the channels per second). channels are either 0 or 5 (5 when pressed) but never exactly those
     session.NotifyWhenDataAvailableExceeds = 2 .* round(ifi.*session.Rate); %1667; %notify every 200 or so samples. gives me a matrix with 0s and times of those 0s
     session.IsContinuous = true;%keeps overwriting the matrix with the zeros continuously
-    lh = session.addlistener('DataAvailable',@weirdfunction); %calls a callback function (see bottom bit). no idea why lh
-    startBackground(session);   %acquisition trigger?
+    lh = session.addlistener('DataAvailable',@listenerfunction); %calls a callback function (see bottom bit). no idea why lh
+    startBackground(session);   %acquisition trigger
     start_monitoring=GetSecs; %psychtoolbox baseline
     ResponseTime = 0;
     ResponseInput = zeros(1,2);
@@ -266,11 +265,11 @@ for trial=1:nr_trials
     %----------------------
     %% Big fat loop
     %----------------------
-     if staircase==true
-        loop_total=1.3;
+    if staircase==true
+       loop_total=1.3;
     else
-        loop_total=2;
-     end
+       loop_total=2;
+    end
    
         
     while pressed==0 && loop_time<loop_total+1+signal_jitter %+1 for random noise     
@@ -352,61 +351,61 @@ for trial=1:nr_trials
             Screen('DrawingFinished', window);
 
 
-                %----------------------
-                %% Re-randomise
-                %----------------------
-                if loop_counter/interval==round(loop_counter/interval)
-                    x=randi([x_centre-rad, x_centre+rad],1,nr_dots);
-                    y=randi([y_centre-rad, y_centre+rad],1,nr_dots);
-                    dot_coords=[x;y];
+            %----------------------
+            %% Re-randomise
+            %----------------------
+            if loop_counter/interval==round(loop_counter/interval)
+                x=randi([x_centre-rad, x_centre+rad],1,nr_dots);
+                y=randi([y_centre-rad, y_centre+rad],1,nr_dots);
+                dot_coords=[x;y];
 
-                    %check if in circle
-                    circle_test=sqrt((power(dot_coords(1,:)-repmat(x_centre,1,length(dot_coords)),2)+power(dot_coords(2,:)-repmat(y_centre,1,length(dot_coords)),2)))-rad<=0;%matric of 0s and 1s
-                    bound=find(circle_test==0); % gives me the positions of 0s in circle_test    
-                    while sum(circle_test)~=length(circle_test)
-                        dot_coords(1,bound)=randi([x_centre-rad, x_centre+rad],1, length(bound));
-                        dot_coords(2,bound)=randi([y_centre-rad, y_centre+rad],1, length(bound));
-                        circle_test=sqrt((power(dot_coords(1,:)-repmat(x_centre,1,length(dot_coords)),2)+power(dot_coords(2,:)-repmat(y_centre,1,length(dot_coords)),2)))-rad<=0;
-                        bound=find(circle_test==0);
-                    end
-                 else % if not interval loop (we didnt just re-randomise)
-                    %----------------------
-                    %% Add Displacement
-                    %----------------------
-                    if (dir==1 & reverse_on==false)| (dir==2 & reverse_on==true) %up
-                        angle=2*pi;%1.5*pi;
-                    elseif (dir==2 & reverse_on==false)| (dir==1 & reverse_on==true) 
-                        angle=pi;%pi/2;
-                    end
-                    if nr_signal ~0;
-                        %displacement signal
-                        dis_a=[1:nr_signal]; %fix with if, if nr=0
-                        displacement(1,dis_a)=round(dot_coords(1,dis_a)+step_size*cos(angle));
-                        displacement(2,dis_a)=round(dot_coords(2,dis_a)+step_size*sin(angle));
-                    end
-                    %displacementy noise
-                    dis_b=[nr_signal+1:length(dot_coords)];
-                    angle=rand(2,length(dis_b))*2*pi;
-                    displacement(1,dis_b)=round(dot_coords(1,dis_b)+step_size*cos(angle(1,:)));
-                    displacement(2,dis_b)=round(dot_coords(2,dis_b)+step_size*sin(angle(2,:)));
-
-                    dot_coords=displacement;
-                    %circle signal
-                    if nr_signal ~0;
-                        circle_test=sqrt((power(dot_coords(1,dis_a)-repmat(x_centre,1,length(dis_a)),2)+power(dot_coords(2,dis_a)-repmat(y_centre,1,length(dis_a)),2)))-rad<=0;%matric of 0s and 1s
-                        bound=find(circle_test==0); % gives me the positions of 0s in circle_test
-                        dot_coords(1,bound)=dot_coords(1,bound)-2*dot_coords(1,bound)-x_centre;
-                    end
-                    %circle noise
-                    circle_test=sqrt((power(dot_coords(1,:)-repmat(x_centre,1,length(dot_coords)),2)+power(dot_coords(2,:)-repmat(y_centre,1,length(dot_coords)),2)))-rad<=0;%matric of 0s and 1s
-                    bound=find(circle_test==0); % gives me the positions of 0s in circle_test    
-                    while sum(circle_test)~=length(circle_test)
-                        dot_coords(1,bound)=randi([x_centre-rad, x_centre+rad],1, length(bound));
-                        dot_coords(2,bound)=randi([y_centre-rad, y_centre+rad],1, length(bound));
-                        circle_test=sqrt((power(dot_coords(1,:)-repmat(x_centre,1,length(dot_coords)),2)+power(dot_coords(2,:)-repmat(y_centre,1,length(dot_coords)),2)))-rad<=0;
-                        bound=find(circle_test==0);
-                    end
+                %check if in circle
+                circle_test=sqrt((power(dot_coords(1,:)-repmat(x_centre,1,length(dot_coords)),2)+power(dot_coords(2,:)-repmat(y_centre,1,length(dot_coords)),2)))-rad<=0;%matric of 0s and 1s
+                bound=find(circle_test==0); % gives me the positions of 0s in circle_test    
+                while sum(circle_test)~=length(circle_test)
+                    dot_coords(1,bound)=randi([x_centre-rad, x_centre+rad],1, length(bound));
+                    dot_coords(2,bound)=randi([y_centre-rad, y_centre+rad],1, length(bound));
+                    circle_test=sqrt((power(dot_coords(1,:)-repmat(x_centre,1,length(dot_coords)),2)+power(dot_coords(2,:)-repmat(y_centre,1,length(dot_coords)),2)))-rad<=0;
+                    bound=find(circle_test==0);
                 end
+             else % if not interval loop (we didnt just re-randomise)
+                %----------------------
+                %% Add Displacement
+                %----------------------
+                if (dir==1 & reverse_on==false)| (dir==2 & reverse_on==true) %up
+                    angle=2*pi;%1.5*pi;
+                elseif (dir==2 & reverse_on==false)| (dir==1 & reverse_on==true) 
+                    angle=pi;%pi/2;
+                end
+                if nr_signal ~0;
+                    %displacement signal
+                    dis_a=[1:nr_signal]; %fix with if, if nr=0
+                    displacement(1,dis_a)=round(dot_coords(1,dis_a)+step_size*cos(angle));
+                    displacement(2,dis_a)=round(dot_coords(2,dis_a)+step_size*sin(angle));
+                end
+                %displacementy noise
+                dis_b=[nr_signal+1:length(dot_coords)];
+                angle=rand(2,length(dis_b))*2*pi;
+                displacement(1,dis_b)=round(dot_coords(1,dis_b)+step_size*cos(angle(1,:)));
+                displacement(2,dis_b)=round(dot_coords(2,dis_b)+step_size*sin(angle(2,:)));
+
+                dot_coords=displacement;
+                %circle signal
+                if nr_signal ~0;
+                    circle_test=sqrt((power(dot_coords(1,dis_a)-repmat(x_centre,1,length(dis_a)),2)+power(dot_coords(2,dis_a)-repmat(y_centre,1,length(dis_a)),2)))-rad<=0;%matric of 0s and 1s
+                    bound=find(circle_test==0); % gives me the positions of 0s in circle_test
+                    dot_coords(1,bound)=dot_coords(1,bound)-2*dot_coords(1,bound)-x_centre;
+                end
+                %circle noise
+                circle_test=sqrt((power(dot_coords(1,:)-repmat(x_centre,1,length(dot_coords)),2)+power(dot_coords(2,:)-repmat(y_centre,1,length(dot_coords)),2)))-rad<=0;%matric of 0s and 1s
+                bound=find(circle_test==0); % gives me the positions of 0s in circle_test    
+                while sum(circle_test)~=length(circle_test)
+                    dot_coords(1,bound)=randi([x_centre-rad, x_centre+rad],1, length(bound));
+                    dot_coords(2,bound)=randi([y_centre-rad, y_centre+rad],1, length(bound));
+                    circle_test=sqrt((power(dot_coords(1,:)-repmat(x_centre,1,length(dot_coords)),2)+power(dot_coords(2,:)-repmat(y_centre,1,length(dot_coords)),2)))-rad<=0;
+                    bound=find(circle_test==0);
+                end
+            end
 
             %----------------------
             %% Response
@@ -446,101 +445,95 @@ for trial=1:nr_trials
         accuracy=0;
     end 
 
-%Save to file
-cue_save=[];
-switch cue
-    case Bias{1};
-        cue_save=1;
-    case Bias{2}
-        cue_save=2;
-    case Bias{3}
-        cue_save=3;
-end
-fprintf(results_file,'\r\n  %d \t %d \t %d \t %d \t %d  \t %d \t %d  \t %f \t %f',trial,cue_save, accuracy, response, dir, round(coh*100), missed_onset,  rt, signal_jitter);
-
-block_acc=[block_acc, accuracy];
-block_rt=[block_rt, rt];
-%BREAK
- if (task==1 | training==1) & ( trial/break_after_x_trials==round(trial/break_after_x_trials) | trial==nr_trials)
-    Screen('TextSize',window, 30);
-    Screen('TextFont',window,'Times');
-    %feedback
-    if length(block_acc)==length(block_rt) & length(block_rt)==break_after_x_trials & trial~=nr_trials%sanity check
-        block_acc=round(sum(block_acc)/length(block_acc)*100);
-        block_rt=round(sum(block_rt)/length(block_rt)*1000);
-        break_text=sprintf( 'Break \r\n \r\n \r\n Average Accuracy: %d %% \r\n  \r\n Average Speed: ms %d ',block_acc, block_rt);
-    elseif  trial==nr_trials%sanity check
-        block_acc=round(sum(block_acc)/length(block_acc)*100);
-        block_rt=round(sum(block_rt)/length(block_rt)*1000);
-        break_text=sprintf( 'Done. \r\n \r\n \r\n Average Accuracy: %d %% \r\n  \r\n Average Speed: ms %d ',block_acc, block_rt);
+    %Save to file
+    cue_save=[];
+    switch cue
+        case Bias{1};
+            cue_save=1;
+        case Bias{2}
+            cue_save=2;
+        case Bias{3}
+            cue_save=3;
     end
-    DrawFormattedText(window,break_text,'center','center',white);
-    Screen('Flip',window);
-    KbStrokeWait;
-    block_started=false;
- end
+    fprintf(results_file,'\r\n  %d \t %d \t %d \t %d \t %d  \t %d \t %d  \t %f \t %f',trial,cue_save, accuracy, response, dir, round(coh*100), missed_onset,  rt, signal_jitter);
+
+    block_acc=[block_acc, accuracy];
+    block_rt=[block_rt, rt];
+    %BREAK
+    if (task==1 | training==1) & ( trial/break_after_x_trials==round(trial/break_after_x_trials) | trial==nr_trials)
+        Screen('TextSize',window, 30);
+        Screen('TextFont',window,'Times');
+        %feedback
+        if length(block_acc)==length(block_rt) & length(block_rt)==break_after_x_trials & trial~=nr_trials%sanity check
+            block_acc=round(sum(block_acc)/length(block_acc)*100);
+            block_rt=round(sum(block_rt)/length(block_rt)*1000);
+            break_text=sprintf( 'Break \r\n \r\n \r\n Average Accuracy: %d %% \r\n  \r\n Average Speed: ms %d ',block_acc, block_rt);
+        elseif  trial==nr_trials%sanity check
+            block_acc=round(sum(block_acc)/length(block_acc)*100);
+            block_rt=round(sum(block_rt)/length(block_rt)*1000);
+            break_text=sprintf( 'Done. \r\n \r\n \r\n Average Accuracy: %d %% \r\n  \r\n Average Speed: ms %d ',block_acc, block_rt);
+        end
+        DrawFormattedText(window,break_text,'center','center',white);
+        Screen('Flip',window);
+        KbStrokeWait;
+        block_started=false;
+    end
     
-[x,y,mousebuttons]=GetMouse([window]);
-if mousebuttons(1)==1
-    KbStrokeWait;
-    fprintf(results_file,'\r\n break \r\n');
-end
+    [x,y,mousebuttons]=GetMouse([window]);
+    if mousebuttons(1)==1
+        KbStrokeWait;
+        fprintf(results_file,'\r\n break \r\n');
+    end
 
-          %FEEDBACK FOR PRACTICE
-          if practice==true
-                if accuracy==0
-                    feedback='Incorrect';
-                else
-                    feedback='Correct';
-                end
-                Screen('TextSize',window, 30);
-                Screen('TextFont',window,'Times');
-                DrawFormattedText(window,feedback,'center','center',white);
-                Screen('Flip',window);
-                pause(0.7); 
-                Screen('Flip',window);
-          end
-            
-          %% STAIRCASE
-          if staircase==true
-            if response ~ 0;
-               q=QuestUpdate(q,stair_coherence,accuracy);
-               stair_coherence=QuestQuantile(q);
-               if  stair_coherence > 0.99
-                    stair_coherence=0.99;
-                elseif  stair_coherence<0.01
-                     stair_coherence=0.01;
-                end
-            end
-          end 
-          
-%----------------------
-    %% Weird Function
-%----------------------
-end
-    function weirdfunction(src, event)
-        if any(event.Data(:,1) > 3) %AI 0 (pinch)
-            ResponseInput(1) = 1;
-            first_response=min(find(event.Data(:,1)>3));
-            ResponseTime = event.TimeStamps(first_response,1);
+    %FEEDBACK FOR PRACTICE
+    if practice==true
+        if accuracy==0
+            feedback='Incorrect';
         else
-            ResponseInput(1) = 0;
+            feedback='Correct';
         end
-
-        if any(event.Data(:,2) > 3)%AI 1 (grip)
-            ResponseInput(2) = 1;
-            first_response=min(find(event.Data(:,2)>3));
-            ResponseTime = event.TimeStamps(first_response,1);
-        else
-            ResponseInput(2) = 0;         
+        Screen('TextSize',window, 30);
+        Screen('TextFont',window,'Times');
+        DrawFormattedText(window,feedback,'center','center',white);
+        Screen('Flip',window);
+        pause(0.7); 
+        Screen('Flip',window);
+    end
+            
+    %% STAIRCASE
+    if staircase==true
+    if response ~ 0;
+       q=QuestUpdate(q,stair_coherence,accuracy);
+       stair_coherence=QuestQuantile(q);
+       if  stair_coherence > 0.99
+            stair_coherence=0.99;
+        elseif  stair_coherence<0.01
+             stair_coherence=0.01;
         end
     end
- 
+    end 
+end       
+%----------------------
+%%  Listener Function
+%----------------------
+function listenerfunction(src, event)
+    if any(event.Data(:,1) > 3) %AI 0 (pinch)
+        ResponseInput(1) = 1;
+        first_response=min(find(event.Data(:,1)>3));
+        ResponseTime = event.TimeStamps(first_response,1);
+    else
+        ResponseInput(1) = 0;
+    end
 
-
-
-
-
+    if any(event.Data(:,2) > 3)%AI 1 (grip)
+        ResponseInput(2) = 1;
+        first_response=min(find(event.Data(:,2)>3));
+        ResponseTime = event.TimeStamps(first_response,1);
+    else
+        ResponseInput(2) = 0;         
+    end
+end
+%---------------------- 
   
 %staircase end
 if staircase==true

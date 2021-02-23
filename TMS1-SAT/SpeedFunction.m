@@ -27,7 +27,7 @@ go_through_while_once=false;
 repeat_loop=false;
 loop_counter=0;
 
-while go_through_while_once==false ||sum(skipped_trials)~0 %go through once anyway and then only if we skipp;ed trials
+while go_through_while_once==false ||sum(skipped_trials)~0 %go through once anyway and then only if we skipped trials
     
     repeat_trials=find(skipped_trials~=0);%gives us positions -> actual trial numbers we skipped
     if isempty(repeat_trials)%first time through
@@ -56,7 +56,7 @@ while go_through_while_once==false ||sum(skipped_trials)~0 %go through once anyw
           trial=repeat_trials(trial);
         end 
 
-        %take appropriate conditions from randomisation thingy earlier
+        %take appropriate conditions from randomisation 
         lvl_coherence=coherence_order(trial);
         direction=direction_order(trial); %direcions randomly drawn. not part of initial randomisation
         bin=bin_order(trial);
@@ -81,9 +81,9 @@ while go_through_while_once==false ||sum(skipped_trials)~0 %go through once anyw
                     WaitSecs(extra_iti);
                     extra_iti_counter=extra_iti_counter+1
                     extra_adder=extra_adder+extra_iti
-                    fprintf(File1,'\r\n %f  \r\n',extra_iti)%this is the ITI before the folloowing trial! comment this out later. if you wana keep this in your output, feed it into trialloop and save it properly
+                    fprintf(File1,'\r\n %f  \r\n',extra_iti)%this is the ITI before the folloowing trial!
 
-                else%i one second isnt enough
+                else
                     stop=0;
                     for i=1:length(bin_order)-trial %goes down list, taking into account how far it can go
                         if bin_order(trial+i)>4 && stop==0
@@ -152,7 +152,6 @@ while go_through_while_once==false ||sum(skipped_trials)~0 %go through once anyw
         [rt, accuracy,time_everything]=TrialLoop(par2{:});
 
         %% Feedback
-        rt
         if rt<speed_deadline && rt>0
             if accuracy==1;
                 feedback='Correct';

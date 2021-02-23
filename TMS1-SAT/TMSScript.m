@@ -1,5 +1,3 @@
-%practice
-
 %% Random Dot Motion Task
 % TMS version
 % Number of trials: nr_trial_per_cond 10 for 800 task trials
@@ -57,11 +55,10 @@ end
         
 %% Screen %CHANGE
 %for 57cm distance from screen, 1cm=1degree
-%this is for 100cm away from screen (for diff distance use
-%tan(angle)=opposite over adjacent(i think) to get angle and then times 2
+%this is for 100cm away from screen 
 screen_cm=37;
 cm_per_degree = 1.7454 ;
-screen_deg=screen_cm / cm_per_degree;%50;
+screen_deg=screen_cm / cm_per_degree;
 deg=window_rect(3)/screen_deg;%number of pixels per degree
 
 %% DAQ setup

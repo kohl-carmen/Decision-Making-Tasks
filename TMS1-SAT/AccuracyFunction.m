@@ -1,6 +1,6 @@
 function total_reward=AccuracyFunction(coherence_order, direction_order,x_centre, y_centre, window, white,ifi,window_rect,buttons,deg, File2,bin_order, tms_bins, bin_interval, coherence, File1, nr_trials,instr_order)
 % Accuracy Function
-% calls 
+
 
 %% Instruction Screen
 Screen('TextFont',window,'Times');
@@ -58,7 +58,7 @@ while go_through_while_once==false ||sum(skipped_trials)~0
         end 
 
 
-        %take appropriate conditions from randomisation thingy earlier
+        %take appropriate conditions from randomisation 
         lvl_coherence=coherence_order(trial);
         direction=direction_order(trial); %direcions randomly drawn. not part of initial randomisation
 
