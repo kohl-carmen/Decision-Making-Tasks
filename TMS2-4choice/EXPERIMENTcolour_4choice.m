@@ -1,5 +1,5 @@
 function colour
-%% Constants   
+ 
 RUNTHROUGH=4;
 Practice=[1 2 3 0] ;
 % 1: start really easy and go down. 4 choice only.no distractors.feedback. targets stay on for first 10 trials
@@ -29,7 +29,7 @@ fprintf(File2, '\r\n Trial \t Target \t Alt \t Acc \t Resp  \t Diff  \t  DomCol 
 tms_file=fopen(strcat(cd,'\',num2str(participant),'_tms.txt'),'a');
     
 %% Psychtoolbox
-PsychDefaultSetup(2); %psychtoolbox setup (?)
+PsychDefaultSetup(2); %psychtoolbox setup 
 screen_nr=max(Screen('Screens')); % returns max. of vector for number of screens
 %define black & white
 white=WhiteIndex(screen_nr);
@@ -59,10 +59,9 @@ end
 %% Screen %CHANGE
 % for 57cm distance from screen, 1cm=1degree
 % this is for 100cm away from screen (for diff distance use
-% tan(angle)=opposite over adjacent(i think) to get angle and then times 2
-screen_cm=37;%50;
+screen_cm=37;
 cm_per_degree = 1.7454 ;
-screen_deg=screen_cm / cm_per_degree;%50;
+screen_deg=screen_cm / cm_per_degree;;
 deg=window_rect(3)/screen_deg;%number of pixels per degree
 
 
@@ -80,7 +79,7 @@ Alt_txt={'AFC4','AFC2w1','AFC2w2','AFC2b1','AFC2b2'}; %only to save names later
 Difficulty=[0.3, 0.33]; 
 
 % TMS
-%now stimulations hould start onle 200ms befor the dot onset
+%now stimulations hould start only 200ms befor the dot onset
 tms_in_target_interval=200;
 target_time_for_tms_onset=target_time*1000-tms_in_target_interval;
 RTMean=700+tms_in_target_interval;
@@ -286,7 +285,7 @@ while trial<=length(conditions)
                   bin_order(trial)=temp1;
                   conditions(trial)=temp5;
               else %no trials left to shuffle
-                  %moosh skipped trial to end:
+                  %move skipped trial to end:
                   bin_order(end+1)=bin_order(trial);
                   diff_order(end+1)=diff_order(trial);
                   dominant_order(end+1)=dominant_order(trial);
@@ -397,13 +396,12 @@ while trial<=length(conditions)
     session.NotifyWhenDataAvailableExceeds = 2 .* round(ifi.*session.Rate); %1667; % notify every 200 or so samples. gives me a matrix with 0s and times of those 0s
     session.IsContinuous = true;%keeps overwriting the matrix with the zeros continuously
     lh = session.addlistener('DataAvailable',@monitor_response); %listener class defines listenever objects(lh) which respond to the specidied event ('datavailable') and identify the callback function to invoke when the event is triggered
-    startBackground(session);   %acquisition trigger?
+    startBackground(session);   %acquisition trigger
     start_monitoring=GetSecs;
     ResponseTime = 0;
     ResponseInput = zeros(1,4);
     outp(address,0);
     %before I put it to 0 here and to 1 for trigger but for some reason it
-    %only works reversed. no idea why.
      
     whole_trial_onset_time=GetSecs;
     trial_time=0;
@@ -588,7 +586,7 @@ end
   
 end
 %----------------------
-%% Weird Function
+%% Listener Function
 %----------------------
 function monitor_response(src, event)
    %event.Data
