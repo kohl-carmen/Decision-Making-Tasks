@@ -22,7 +22,7 @@ speed_deadline=0.6;
 %% Trial Loop
 for trial=1:nr_trials
 
-    %take appropriate conditions from randomisation thingy earlier
+    %take appropriate conditions from randomisation
     %see ConditionsOrder.mat
     lvl_coherence=coherence_order(trial);
     direction=direction_order(trial); %direcions randomly drawn. not part of initial randomisation
@@ -124,7 +124,7 @@ for trial=1:nr_trials
     total_reward=total_reward+reward;
     
     %% Speed Staircase
-    if lvl_coherence==2 %for hard. is this hard? check
+    if lvl_coherence==2 
         q_speed=QuestUpdate(q_speed, speed_deadline,accuracy);
         speed_deadline=QuestQuantile(q_speed);
         if speed_deadline>0.75

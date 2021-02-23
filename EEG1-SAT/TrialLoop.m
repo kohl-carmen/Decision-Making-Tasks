@@ -16,14 +16,14 @@ if buttons==1
     %http://uk.mathworks.com/help/daq/ref/adddigitalchannel.html#btjdzmh-1
 
     %addDigitalChannel(session2,'dev1', 'Port0/Line8:9', 'OutputOnly'); %for EEG/EMG markers and TMS
-    addAnalogInputChannel(session,'dev1',0:1,'Voltage'); %use 0:1 for two channel, etc. (Kiela used 'session.addAnalog..(dev)')
+    addAnalogInputChannel(session,'dev1',0:1,'Voltage'); %use 0:1 for two channel, etc. (for analog: 'session.addAnalog..(dev)')
 
     session.Rate = 100000;%sampling rate (how many times it checks the status of the channels per second). channels are either 0 or 5 (5 when pressed) but never exactly those
     session.NotifyWhenDataAvailableExceeds = 2 .* round(ifi.*session.Rate); %1667; %notify every 200 or so samples. gives me a matrix with 0s and times of those 0s
     session.IsContinuous = true;%keeps overwriting the matrix with the zeros continuously
 
-    lh = session.addlistener('DataAvailable',@weirdfunction); %calls a callback function (see bottom bit). no idea why lh
-    startBackground(session);   %acquisition trigger?
+    lh = session.addlistener('DataAvailable',@listenerfunction); %calls a callback function (see bottom bit)
+    startBackground(session);   %acquisition trigger
     Trigger2=GetSecs; %psychtoolbox baseline
     ResponseTime = 0;
     ResponseInput = zeros(1,2);
@@ -180,7 +180,7 @@ while pressed==0 && loop_time<2+1+signal_jitter %+1 for random noise
             dot_coords(1,bound)=randi([x_centre-rad, x_centre+rad],1, length(bound));
             dot_coords(2,bound)=randi([y_centre-rad, y_centre+rad],1, length(bound));
             circle_test=sqrt((power(dot_coords(1,:)-repmat(x_centre,1,length(dot_coords)),2)+power(dot_coords(2,:)-repmat(y_centre,1,length(dot_coords)),2)))-rad<=0;
-            %tried to only test changed one sbut didnt work. try again later. %circle_test=sqrt((power(dot_coords(1,bound)-repmat(x_centre,1,length(bound)),2)+power(dot_coords(2,bound)-repmat(y_centre,1,length(bound)),2)))-rad<=0;%matric of 0s and 1s
+            . %circle_test=sqrt((power(dot_coords(1,bound)-repmat(x_centre,1,length(bound)),2)+power(dot_coords(2,bound)-repmat(y_centre,1,length(bound)),2)))-rad<=0;%matric of 0s and 1s
             bound=find(circle_test==0);
         end
     else % if not interval loop (we didnt just re-randomise)
@@ -220,7 +220,7 @@ while pressed==0 && loop_time<2+1+signal_jitter %+1 for random noise
             dot_coords(1,bound)=randi([x_centre-rad, x_centre+rad],1, length(bound));
             dot_coords(2,bound)=randi([y_centre-rad, y_centre+rad],1, length(bound));
             circle_test=sqrt((power(dot_coords(1,:)-repmat(x_centre,1,length(dot_coords)),2)+power(dot_coords(2,:)-repmat(y_centre,1,length(dot_coords)),2)))-rad<=0;
-            %tried to only test changed one sbut didnt work. try again later. %circle_test=sqrt((power(dot_coords(1,bound)-repmat(x_centre,1,length(bound)),2)+power(dot_coords(2,bound)-repmat(y_centre,1,length(bound)),2)))-rad<=0;%matric of 0s and 1s
+            %circle_test=sqrt((power(dot_coords(1,bound)-repmat(x_centre,1,length(bound)),2)+power(dot_coords(2,bound)-repmat(y_centre,1,length(bound)),2)))-rad<=0;%matric of 0s and 1s
             bound=find(circle_test==0);
         end
     end
@@ -298,10 +298,10 @@ else
 end
 
 %----------------------
-%% Weird Function
+%% Listener Function
 %----------------------
 
-function weirdfunction(src, event)
+function listenerfunction(src, event)
     if any(event.Data(:,1) > 3) %AI 0 (pinch)
         ResponseInput(1) = 1;
         acquisition_start = Trigger2;%event.TriggerTime*24*60*60;

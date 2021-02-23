@@ -19,7 +19,7 @@ instr=0;
 %% Trial Loop
 for trial=1:nr_trials
 
-    %take appropriate conditions from randomisation thingy earlier
+    %take appropriate conditions from randomisation 
     %see ConditionsOrder.mat
     lvl_coherence=coherence_order(trial);
     direction=direction_order(trial); %direcions randomly drawn. not part of initial randomisation

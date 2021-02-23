@@ -32,7 +32,7 @@ trial_coherence_95=0.4;
 %% Trial Loop
 for trial=1:stair_trials
 
-    %take appropriate conditions from randomisation thingy earlier
+    %take appropriate conditions from randomisation 
     direction=direction_order(trial); %direcions randomly drawn. not part of initial randomisation
     easy_hard_condition=easy_hard_order(trial); % 1=easy
     

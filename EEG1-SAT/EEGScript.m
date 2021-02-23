@@ -1,6 +1,3 @@
-% test if markers are right (esp feedback)
-%coherence
-%check fixation cross size
 %% Random Dot Motion Task
 % EEG version
 % Number of trials: nr_trial_per_cond 100 for 800 task trials
@@ -11,7 +8,7 @@
 participant=input('participant: ','s');
 age=input('age: ');
 gender=input('gender: ','s');
-instr_order=input('instruction order (1 =speed first): ');; %1=speed first, 2=accuracy first
+instr_order=input('instruction order (1 =speed first): '); %1=speed first, 2=accuracy first
 
 %Stimulus Settings
 nr_trials_per_cond=50; % dont go under staircase
@@ -31,7 +28,7 @@ fprintf(File1, '\r\n Trial \t Condition \t Accuracy \t Response \t Direction \t 
 fprintf(File3, '\r\n Trial \t Condition \t Accuracy \t Response \t Direction \t Lvl of Coherence \t Missed Flips \t easy/hard \t RT \t signal jitter \t deadline\n');
 
 %% Psychtoolbox
-PsychDefaultSetup(2); %psychtoolbox setup (?)
+PsychDefaultSetup(2); %psychtoolbox setup 
 screen_nr=max(Screen('Screens')); % returns max. of vector for number of screens
 %define black & white
 white=WhiteIndex(screen_nr);
@@ -52,10 +49,9 @@ HideCursor;
 %% Screen %CHANGE
 %for 57cm distance from screen, 1cm=1degree
 %this is for 100cm away from screen (for diff distance use
-%tan(angle)=opposite over adjacent(i think) to get angle and then times 2
-screen_cm=37;%50;
+screen_cm=37;
 cm_per_degree = 1.7454 ;
-screen_deg=screen_cm / cm_per_degree;%50;
+screen_deg=screen_cm / cm_per_degree;
 deg=window_rect(3)/screen_deg;%number of pixels per degree
 
 % DAQ setup
